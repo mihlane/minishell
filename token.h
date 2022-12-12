@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 11:52:41 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/07 13:36:07 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/11 00:04:24 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef struct token
         TOKEN_COMMA,
         TOKEN_EOF
     } tkn;
-
+    int type;
+    char *value;
     struct token *next;
 }t_token;
 
