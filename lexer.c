@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/12 01:32:27 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/13 00:27:38 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,90 @@ void lexer_skip_whitespace(t_lexer* lexer)
         lexer_advance(lexer);
     }
 }
+t_token *lexer_collect_redirect2(t_lexer *lexer)
+{
+    char* s;
+    char* value = calloc(1, sizeof(char));
+    lexer_advance(lexer);
+    lexer_advance(lexer);
+    lexer_skip_whitespace(lexer);
+    // printf("helo\n");
+    // printf ("in in\n");
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line)  && lexer->c != ' ' && lexer->c != 10)
+    {
+        // printf ("yeah\n");
+        s = lexer_get_current_char_as_string(lexer);
+        value = ft_strjoin(value, s);
+        // printf ("value : %s\ns is : %s\n", value, s);
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer);
+    
+    return init_token(TOKEN_RD2, value);
+}
+t_token *lexer_collect_redirect1(t_lexer *lexer)
+{
+    char* s;
+    char* value = calloc(1, sizeof(char));
+    lexer_advance(lexer);
+    // lexer_advance(lexer);
+    lexer_skip_whitespace(lexer);
+    // printf("helo\n");
+    // printf ("in in\n");
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != ' ' && lexer->c != 10)
+    {
+        // printf ("yeah\n");
+        s = lexer_get_current_char_as_string(lexer);
+        value = ft_strjoin(value, s);
+        // printf ("value : %s\ns is : %s\n", value, s);
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer);
+    
+    return init_token(TOKEN_RD1, value);
+}
+t_token *lexer_collect_redirect3(t_lexer *lexer)
+{
+    char* s;
+    char* value = calloc(1, sizeof(char));
+    lexer_advance(lexer);
+    lexer_advance(lexer);
+    lexer_skip_whitespace(lexer);
+    // printf("helo\n");
+    // printf ("in in\n");
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line)  && lexer->c != ' ' && lexer->c != 10)
+    {
+        // printf ("yeah\n");
+        s = lexer_get_current_char_as_string(lexer);
+        value = ft_strjoin(value, s);
+        // printf ("value : %s\ns is : %s\n", value, s);
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer);
+    
+    return init_token(TOKEN_RD3, value);
+}
+t_token *lexer_collect_redirect4(t_lexer *lexer)
+{
+    char* s;
+    char* value = calloc(1, sizeof(char));
+    // lexer_advance(lexer);
+    // lexer_advance(lexer);
+    lexer_skip_whitespace(lexer);
+    // printf("helo\n");
+    // printf ("in in\n");
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != ' ' && lexer->c != 10)
+    {
+        // printf ("yeah\n");
+        s = lexer_get_current_char_as_string(lexer);
+        value = ft_strjoin(value, s);
+        // printf ("value : %s\ns is : %s\n", value, s);
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer);
+    
+    return init_token(TOKEN_RD4, value);
+}
 
 t_token* lexer_get_next_token(t_lexer* lexer)
 {
@@ -75,14 +159,49 @@ t_token* lexer_get_next_token(t_lexer* lexer)
         if (lexer->c == ' ' || lexer->c == 10)
             lexer_skip_whitespace(lexer);
 
-        // if (isalnum(lexer->c))
-        //     return lexer_collect_id(lexer);
 
         // else
-        if (lexer->c == '"')
-        took = lexer_collect_string(lexer);
-        printf("tokken = %s\n", took->value);
+        if (lexer->c == '>' && lexer->line[lexer->i+1] == '>')
+        {
+            took = lexer_collect_redirect2(lexer);
             return (took);
+            // printf("took = %s\n", took->value);
+        }
+        if (lexer->c == '>' && lexer->line[lexer->i+1] != '>')
+        {
+            took = lexer_collect_redirect1(lexer);
+            return (took);
+            // printf("took = %s\n", took->value);
+        }
+           if (lexer->c == '<' && lexer->line[lexer->i+1] == '<')
+        {
+            took = lexer_collect_redirect3(lexer);
+            return (took);
+            // printf("took = %s\n", took->value);
+        }
+        if (lexer->c == '<' && lexer->line[lexer->i+1] != '<')
+        {
+            took = lexer_collect_redirect4(lexer);
+            return (took);
+            // printf("took = %s\n", took->value);
+        }
+         if (lexer->c == '|')
+         {
+            lexer_advance(lexer);
+            took = init_token(TOKEN_PIPE, "pipe");
+            return (took);
+         }
+        if (lexer->c == '"' || lexer->c == 39)
+        {
+            took = lexer_collect_string(lexer);
+            return (took);
+        }
+        // printf("tokken = %s\n", took->value);
+            // return (took);
+        // if (isalnum(lexer->c))
+            return lexer_collect_id(lexer);
+        // if (lexer->c == 39) 
+        //     took = lexer_collect_string(lexer);
         // if (lexer->c == '')
 
         // switch (lexer->c)
@@ -99,25 +218,43 @@ t_token* lexer_get_next_token(t_lexer* lexer)
     
     return init_token(TOKEN_EOF, "\0");
 }
+int check_num_q(t_lexer *lexer)
+{
+    int i = 0;
+    int z = 0;
+    while (lexer->line[i])
+    {
+        if (lexer->line[i] == '"')
+            z++;
+        if (lexer->line[i] == '|')
+            return (z);
+        i++;
+    }
+    return (z);
+    
+}
 
 t_token* lexer_collect_string(t_lexer* lexer)
 {
     char* s;
     char* value = calloc(1, sizeof(char));
-    lexer_advance(lexer);
+    // lexer_advance(lexer);
     // printf("helo\n");
     // printf ("in in\n");
-    while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != '"')
+    // check_num_q(lexer);
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line))
     {
-        // printf ("yeah\n");
+        // printf ("yeah %c\n", lexer->c);
         s = lexer_get_current_char_as_string(lexer);
         value = ft_strjoin(value, s);
         // printf ("value : %s\ns is : %s\n", value, s);
+        if ((lexer->c == '"' || lexer->c == 39) && lexer->line[lexer->i+1] == ' ')
+            break;
         lexer_advance(lexer);
     }
     lexer_advance(lexer);
-    
-    return init_token(TOKEN_STRING, value);
+    // printf("value =  %s\n", value);
+    return init_token(TOKEN_ID, value);
 }
 
 t_token* lexer_collect_id(t_lexer* lexer)
@@ -125,7 +262,7 @@ t_token* lexer_collect_id(t_lexer* lexer)
     char* value = calloc(1, sizeof(char));
     value[0] = '\0';
 
-    while (isalnum(lexer->c))
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != ' ' && lexer->c != 10)
     {
         char* s = lexer_get_current_char_as_string(lexer);
         value = realloc(value, (strlen(value) + strlen(s) + 1) * sizeof(char));

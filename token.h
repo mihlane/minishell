@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 11:52:41 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/11 00:04:24 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/12 23:52:22 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ typedef struct token
     enum
     {
         TOKEN_ID,
-        TOKEN_EQUALS,
-        TOKEN_STRING,
-        TOKEN_SEMI,
-        TOKEN_LPAREN,
-        TOKEN_RPAREN,
-        TOKEN_RBRACE,
-        TOKEN_LBRACE,
-        TOKEN_COMMA,
+        TOKEN_RD2,
+        // TOKEN_STRING,
+        TOKEN_RD1,
+        TOKEN_RD3,
+        TOKEN_RD4,
+        TOKEN_PIPE,
+        // TOKEN_LBRACE,
+        // TOKEN_COMMA,
         TOKEN_EOF
     } tkn;
     int type;
