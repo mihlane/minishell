@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/13 00:27:38 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/13 12:18:11 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,29 @@ t_token *lexer_collect_redirect4(t_lexer *lexer)
     return init_token(TOKEN_RD4, value);
 }
 
+t_token* lexer_collect_string2(t_lexer* lexer)
+{
+    char* s;
+    char* value = calloc(1, sizeof(char));
+    // lexer_advance(lexer);
+    // printf("helo\n");
+    // printf ("in in\n");
+    // check_num_q(lexer);
+    while (lexer->c != '\0' && lexer->i < strlen(lexer->line))
+    {
+        // printf ("yeah %c\n", lexer->c);
+        s = lexer_get_current_char_as_string(lexer);
+        value = ft_strjoin(value, s);
+        // printf ("value : %s\ns is : %s\n", value, s);
+        if (lexer->c == 39 && lexer->line[lexer->i+1] == ' ')
+            break;
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer);
+    // printf("value =  %s\n", value);
+    return init_token(TOKEN_ID, value);
+}
+
 t_token* lexer_get_next_token(t_lexer* lexer)
 {
     t_token *took = NULL;
@@ -191,9 +214,15 @@ t_token* lexer_get_next_token(t_lexer* lexer)
             took = init_token(TOKEN_PIPE, "pipe");
             return (took);
          }
-        if (lexer->c == '"' || lexer->c == 39)
+        if (lexer->c == '"')
         {
             took = lexer_collect_string(lexer);
+            return (took);
+        }
+        if (lexer->c == 39)
+        if (lexer->c == '"')
+        {
+            took = lexer_collect_string2(lexer);
             return (took);
         }
         // printf("tokken = %s\n", took->value);
@@ -248,7 +277,7 @@ t_token* lexer_collect_string(t_lexer* lexer)
         s = lexer_get_current_char_as_string(lexer);
         value = ft_strjoin(value, s);
         // printf ("value : %s\ns is : %s\n", value, s);
-        if ((lexer->c == '"' || lexer->c == 39) && lexer->line[lexer->i+1] == ' ')
+        if (lexer->c == '"'  && lexer->line[lexer->i+1] == ' ')
             break;
         lexer_advance(lexer);
     }
