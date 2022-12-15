@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/13 00:35:36 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/15 22:58:33 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ int main(int ac, char **av)
 {
     str = readline("\033[0;32m~ minishell\x1b[0m ");
     lexi(str);
-    // printf("%s\n", str);
+    printf("%s\n", str);
 }
 }
