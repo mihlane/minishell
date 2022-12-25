@@ -1,40 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.h                                            :+:      :+:    :+:   */
+/*   synatxe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/07 11:52:41 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/24 18:26:55 by mhabibi-         ###   ########.fr       */
+/*   Created: 2022/12/21 22:08:59 by mhabibi-          #+#    #+#             */
+/*   Updated: 2022/12/21 22:09:59 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "lexer.h"
+#include "token.h"
 
-# ifndef    TOKEN_H
-# define    TOKEN_H
-
-typedef struct token
+t_token     *check_syntax_err(t_token *toke)
 {
-    int i;
-    enum
-    {
-        TOKEN_ID,
-        TOKEN_RD2,
-        // TOKEN_STRING,
-        TOKEN_RD1,
-        TOKEN_RD3,
-        TOKEN_RD4,
-        TOKEN_PIPE,
-        // TOKEN_LBRACE,
-        // TOKEN_COMMA,
-        TOKEN_EOF
-    } tkn;
-    int type;
-    char *value;
-    struct token *next;
-}t_token;
-
-
-
-#endif
+    
+}

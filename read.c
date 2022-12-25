@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/15 22:58:33 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/24 22:02:36 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ t_token    *lexi(char *str)
     t_token *tmp;
     t_token *toke;
     lex = init_lexer(str);
+    lexer_skip_whitespace(lex);
+    if (lex->line[lex->i] == '|')
+    {
+        printf("syntax error habibi\n");
+        return NULL;
+    }
     toke = lexer_get_next_token(lex);
     tmp = toke;
     while (toke && lex->i < strlen(lex->line))
@@ -33,6 +39,7 @@ t_token    *lexi(char *str)
         toke = toke->next;
     }
     toke = tmp;
+    // check_syntax_err(toke);
     i = 0;
     while (toke && i < strlen(lex->line))
     {

@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 01:34:57 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/11 17:14:33 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/25 01:20:40 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void lexer_skip_whitespace(t_lexer* lexer);
 
 t_token* lexer_get_next_token(t_lexer* lexer);
 
-t_token* lexer_collect_string(t_lexer* lexer);
+char    * lexer_collect_string(t_lexer* lexer);
 
 t_token* lexer_collect_id(t_lexer* lexer);
 
