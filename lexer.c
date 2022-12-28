@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/25 01:40:25 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/27 03:10:53 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ t_token *lexer_collect_redirect3(t_lexer *lexer)
     // printf ("in in\n");
     if (lexer->c == '>' || lexer->c == '<' || lexer->c == '|' )
         {
-            printf("synatx error\n");
+            printf("syntax error\n");
             return NULL;
         }
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line)  && lexer->c != ' ' && lexer->c != 10)
@@ -175,7 +175,7 @@ t_token *lexer_collect_redirect4(t_lexer *lexer)
     char* s;
     char* value = calloc(1, sizeof(char));
     // lexer_advance(lexer);
-    // lexer_advance(lexer);
+    lexer_advance(lexer);
     lexer_skip_whitespace(lexer);
     // printf("helo\n");
     // printf ("in in\n");

@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/24 22:02:36 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/28 03:34:03 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "token.h"
+
 
 t_token    *lexi(char *str)
 {
@@ -57,11 +58,20 @@ t_token    *lexi(char *str)
 int main(int ac, char **av)
 {
     char *str;
+    t_token *toke;
     (void)av;
     while (ac)
 {
     str = readline("\033[0;32m~ minishell\x1b[0m ");
-    lexi(str);
-    printf("%s\n", str);
+    toke = lexi(str);
+    ft_expand(toke);
+    // printf("%s\n", str);
 }
 }
+
+// "$l.g"
+// $USER
+//"$PATH....$USER'$LLL',,,123$L$USER"
+//ls >'>'<<'a'>'file'a|pwd>'<<'
+//echo $a_
+//export a_=bk

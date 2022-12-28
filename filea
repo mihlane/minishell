@@ -1,0 +1,17 @@
+<<
+>
+Makefile
+Minishell
+Minishell.dSYM
+a.out.dSYM
+expand.c
+filea
+habibi
+lexer.c
+lexer.h
+parser.h
+parsing.c
+read.c
+sooof.c
+synatxe.c
+token.h
