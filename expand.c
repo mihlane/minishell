@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhabibi- < mhabibi-@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 18:24:28 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/28 03:30:57 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/29 23:29:54 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,16 +149,18 @@ char *expand_double(char *value, int i)
     // if (value[z] >= '0' && value[z] <= '9')
     //     z++;
     while (value[z])
+    
     {
-            // if (value[z+1] == '$' || isdigit(value[z+1]) != 0)
-            // {
-            //     str2 = ft_strjoin(str2, check_digits_and_$(value, z));
-            //     while(value[z] == '$' || isdigit(value[z]) != 0)
-            //         z++;
-            //     while(isalnum(value[z]) != 0)
-            //         z++;
-            // }
-        if (value[z] == '$' && value[z+1] != '$' && isdigit(value[z+1]) != 0)
+            if (value[z] == '$' && (value[z+1] == '$' || isdigit(value[z+1]) != 0))
+            {
+                str2 = ft_strjoin(str2, check_digits_and_$(value, z));
+                while(value[z] == '$' || isdigit(value[z]) != 0)
+                    z++;
+                while(isalnum(value[z]) != 0)
+                    z++;
+            }
+            printf ("str3 : %s\n", str3);
+        if (value[z] == '$' && value[z+1] != '$' && isdigit(value[z+1]) == 0)
         {
             z+=1;
             while(isalnum(value[z]) != 0 )
@@ -167,7 +169,6 @@ char *expand_double(char *value, int i)
                 str3 = ft_strjoin(str3,str);
                 z++;
             }
-            // printf ("str3 : %s\n", str3);
             USER = getenv(str3);
             str2 = ft_strjoin(str2, USER);
             str3[0] = 0;
@@ -268,7 +269,7 @@ t_token *check_toke(t_token *toke)
 }
 t_token *ft_expand(t_token *toke)
 {
-    t_token *tmp;
+    t_token *tmp = NULL;
     tmp = toke;
     while (toke)
     {
@@ -278,5 +279,6 @@ t_token *ft_expand(t_token *toke)
         }
         toke = toke->next;
     }
+    toke = tmp;
     return (toke);
 }

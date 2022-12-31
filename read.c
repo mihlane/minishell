@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhabibi- < mhabibi-@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/28 03:34:03 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/30 22:53:35 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int main(int ac, char **av)
     while (ac)
 {
     str = readline("\033[0;32m~ minishell\x1b[0m ");
+    add_history(str);
     toke = lexi(str);
     ft_expand(toke);
     // printf("%s\n", str);
@@ -75,3 +76,10 @@ int main(int ac, char **av)
 //ls >'>'<<'a'>'file'a|pwd>'<<'
 //echo $a_
 //export a_=bk
+// separe bhadok l3aybat
+//"$USER"'$T'$HOME
+//''""''""RRRRR$RF
+//echo $
+//echo "$4USER"
+//$HOME...$USER'$HOME'"$USER"$l
+//$nnnn$nnnn$kk..$USE you ignore everything before something that doesnt expanded
