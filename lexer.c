@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/27 03:10:53 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/01 01:07:20 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,16 @@ t_token *lexer_collect_redirect2(t_lexer *lexer)
         }
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line))
     {
+           if (lexer->c == '"')
+        {
+            value =  ft_strjoin( value, lexer_collect_string(lexer));
+            // return (took);
+        }
+       else if  (lexer->c == 39)
+        {
+            value =  ft_strjoin( value, lexer_collect_string2(lexer));
+            // return (took);
+        }
         if (lexer->c == ' ' || lexer->c == 10)
         break;
         if (lexer->c == '>' || lexer->c == '<' || lexer->c == '|' )
@@ -117,7 +127,17 @@ t_token *lexer_collect_redirect1(t_lexer *lexer)
     // printf ("in in\n");
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != ' ' && lexer->c != 10)
     {
-        // printf ("yeah\n");
+        printf ("yeah\n");
+         if (lexer->c == '"')
+        {
+            value =  ft_strjoin( value, lexer_collect_string(lexer));
+            // return (took);
+        }
+       else if  (lexer->c == 39)
+        {
+            value =  ft_strjoin( value, lexer_collect_string2(lexer));
+            // return (took);
+        }
         if (lexer->c == ' ' || lexer->c == 10)
         break;
         if (lexer->c == '>' || lexer->c == '<' || lexer->c == '|' )
@@ -153,6 +173,16 @@ t_token *lexer_collect_redirect3(t_lexer *lexer)
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line)  && lexer->c != ' ' && lexer->c != 10)
     {
         // printf ("yeah\n");
+           if (lexer->c == '"')
+        {
+            value =  ft_strjoin( value, lexer_collect_string(lexer));
+            // return (took);
+        }
+       else if  (lexer->c == 39)
+        {
+            value =  ft_strjoin( value, lexer_collect_string2(lexer));
+            // return (took);
+        }
          if (lexer->c == ' ' || lexer->c == 10)
         break;
         if (lexer->c == '>' || lexer->c == '<' || lexer->c == '|' )
@@ -187,6 +217,16 @@ t_token *lexer_collect_redirect4(t_lexer *lexer)
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != ' ' && lexer->c != 10)
     {
         // printf ("yeah\n");
+           if (lexer->c == '"')
+        {
+            value =  ft_strjoin( value, lexer_collect_string(lexer));
+            // return (took);
+        }
+       else if  (lexer->c == 39)
+        {
+            value =  ft_strjoin( value, lexer_collect_string2(lexer));
+            // return (took);
+        }
         if (lexer->c == ' ' || lexer->c == 10)
         break;
         if (lexer->c == '>' || lexer->c == '<' || lexer->c == '|' )
@@ -219,7 +259,7 @@ char * lexer_collect_string2(t_lexer* lexer)
         // printf ("yeah %c\n", lexer->c);
         s = lexer_get_current_char_as_string(lexer);
         value = ft_strjoin(value, s);
-        // printf ("value : %s\ns is : %s\n", value, s);
+        printf ("value : %s\ns is : %s\n", value, s);
         lexer_advance(lexer);
         if (lexer->c == 39)
         // && lexer->line[lexer->i+1] == ' ')
@@ -382,24 +422,27 @@ t_token* lexer_collect_id(t_lexer* lexer)
 
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line) && lexer->c != ' ' && lexer->c != 10)
     {
-        if (lexer->c == '|' || lexer->c == '>' || lexer->c == '<' )
+        if (lexer->c == '|' || lexer->c == '>' || lexer->c == '<' || lexer->c == ' ')
             break;
+        if (lexer->c != 39 && lexer->c != '"')
+        {
+            char* s = lexer_get_current_char_as_string(lexer);
+            value = ft_strjoin(value, s);
+            lexer_advance(lexer);
+        }
          if (lexer->c == '"')
         {
             value =  ft_strjoin( value, lexer_collect_string(lexer));
+            printf("lexer fhj%lu\n", lexer->i);
             // return (took);
+            // lexer_advance(lexer);
         }
         // if (lexer->c == 39)
         else if  (lexer->c == 39)
         {
             value =  ft_strjoin( value, lexer_collect_string2(lexer));
             // return (took);
-        }
-        if (lexer->c != 39 && lexer->c != '"')
-        {
-            char* s = lexer_get_current_char_as_string(lexer);
-            value = ft_strjoin(value, s);
-        lexer_advance(lexer);
+            // lexer_advance(lexer);
         }
         // strcat(value, s);
 

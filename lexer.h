@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 01:34:57 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/26 01:23:30 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2022/12/31 18:49:05 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_token* init_token(int type, char* value);
 t_token *ft_expand(t_token *toke);
 char	*ft_strjoin(char *s1, char *s2);
 char* parser_get_current_char_as_string(char c);
+char * lexer_collect_string2(t_lexer* lexer);
 
 
 # endif

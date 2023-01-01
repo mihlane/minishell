@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabibi- < mhabibi-@student.1337.ma>       +#+  +:+       +#+        */
+/*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 18:24:28 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/29 23:29:54 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/01 01:35:29 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,11 @@ char *expand_double(char *value, int i)
                 z++;
             }
             USER = getenv(str3);
+            if (USER != NULL)
+            {
             str2 = ft_strjoin(str2, USER);
             str3[0] = 0;
+            }
         }
         else if (value[z] != '$')
         {
@@ -212,8 +215,8 @@ t_token *go_expand(t_token *toke)
             // printf("final = %s\n", str);
             while (toke->value[i] != '"')
                 i++;
-                // i++;
-                printf("value = %c  str3 = %s\n", toke->value[i], str3);
+                // i--;
+                i++;
         }
         // printf("heloooooooooooooo==-=-4908689576895689\n");
         if (toke->value[i] == 39)
@@ -226,6 +229,7 @@ t_token *go_expand(t_token *toke)
             while (toke->value[i] != 39)
                 i++;
             i++;
+                printf("value = %c  str3 = %s\n", toke->value[i], str3);
         }
         else if (toke->value[i] != '"' && toke->value[i] != 39)
         {
@@ -248,7 +252,7 @@ t_token *go_expand(t_token *toke)
         {
             break;
         }
-        printf("finaaaaaaaal ----- z = %d = \n%s\n", i, str3);
+        printf("finaaaaaaaal ----- z = %d = \n%c\n", i, toke->value[i]);
     }
     printf("finaaaaaaaal = \n%s\n", str3);
     return (toke);
