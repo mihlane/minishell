@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/01 01:07:20 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/03 20:25:31 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,6 @@ char * lexer_collect_string2(t_lexer* lexer)
     // lexer_advance(lexer);
     // printf("helo\n");
     // printf ("in in\n");
-    // check_num_q(lexer);
     while (lexer->c != '\0' && lexer->i < strlen(lexer->line))
     {
         // printf ("yeah %c\n", lexer->c);
@@ -356,21 +355,6 @@ t_token* lexer_get_next_token(t_lexer* lexer)
     
     return init_token(TOKEN_EOF, "\0");
 }
-int check_num_q(t_lexer *lexer)
-{
-    int i = 0;
-    int z = 0;
-    while (lexer->line[i])
-    {
-        if (lexer->line[i] == '"')
-            z++;
-        if (lexer->line[i] == '|')
-            return (z);
-        i++;
-    }
-    return (z);
-    
-}
 
 char * lexer_collect_string(t_lexer* lexer)
 {
@@ -379,7 +363,6 @@ char * lexer_collect_string(t_lexer* lexer)
     // lexer_advance(lexer);
     // printf("helo\n");
     // printf ("in in\n");
-    // check_num_q(lexer);
     while(lexer->c != '\0' && lexer->i < strlen(lexer->line))
     {
         // printf ("yeah %c\n", lexer->c);
@@ -433,7 +416,7 @@ t_token* lexer_collect_id(t_lexer* lexer)
          if (lexer->c == '"')
         {
             value =  ft_strjoin( value, lexer_collect_string(lexer));
-            printf("lexer fhj%lu\n", lexer->i);
+            // printf("lexer fhj%lu\n", lexer->i);
             // return (took);
             // lexer_advance(lexer);
         }
@@ -448,13 +431,6 @@ t_token* lexer_collect_id(t_lexer* lexer)
 
     }
     return init_token(TOKEN_ID, value);
-}
-
-t_token* lexer_advance_with_token(t_lexer* lexer, t_token* token)
-{
-    lexer_advance(lexer);
-
-    return token;
 }
 
 char* lexer_get_current_char_as_string(t_lexer* lexer)

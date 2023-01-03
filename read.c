@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhabibi- < mhabibi-@student.1337.ma>       +#+  +:+       +#+        */
+/*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2022/12/30 22:53:35 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/03 20:31:45 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,3 +83,10 @@ int main(int ac, char **av)
 //echo "$4USER"
 //$HOME...$USER'$HOME'"$USER"$l
 //$nnnn$nnnn$kk..$USE you ignore everything before something that doesnt expanded
+
+
+
+//expand 127;
+//li ba9i ma khedamch 
+// //"$PATH....$USER'$LLL',,,123$L$USER"
+//echo $

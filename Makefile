@@ -3,6 +3,7 @@ NAME  = Minishell
 SRCS  = read.c\
 		lexer.c\
 		expand.c\
+		lexi_toke.c
 
 CC = @cc
 
