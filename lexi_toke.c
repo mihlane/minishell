@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 19:13:20 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/03 16:31:39 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/04 23:55:55 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ t_expand* init_expand(t_token *toke)
     expand->i = 0;
     expand->c = expand->value[expand->i];
     expand->expanded = calloc(1, sizeof(char));
+    expand->type = toke->type;
     return expand;
 }

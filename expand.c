@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 18:24:28 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/03 22:02:45 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/07 01:26:01 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char* parser_get_current_char_as_string(char c)
     char* str = malloc(sizeof(char)*2);
     str[0] = c;
     str[1] = '\0';
-
     return str;
 }
 t_expand *expand_nor(t_expand *exp)
@@ -96,6 +95,11 @@ t_expand *expand_nor(t_expand *exp)
     }
             // printf ("str3 : %s\n", str3);
     USER = getenv(str3);
+    if (USER == NULL && exp->type > 0 && exp->type <=4)
+    {
+        printf("$%s: ambiguous redirect\n", str3);
+        return (NULL);
+    }
     if (USER != NULL )
         exp->expanded = ft_strjoin(exp->expanded, USER);
     str3[0] = 0;
@@ -121,6 +125,8 @@ t_expand *check_digits_and_$(t_expand *exp)
         }
          else
          {
+            if (isdigit(exp->c) != 0)
+                token_advance(exp);
             while(isalnum(exp->c) != 0)
             {
                 // printf("value [i] -----= %c\n", value[i]);
@@ -138,7 +144,7 @@ t_expand *check_digits_and_$(t_expand *exp)
                 // break;
             }
          }
-                printf("hola %c\n", exp->c);
+                // printf("hola %c\n", exp->c);
             // i++;
     }
     // printf("str3 ======= %s\n", str3);
@@ -162,7 +168,7 @@ char *expand_double(t_expand *exp)
     //     z++;
     while (exp->c != '\0')
     {
-            printf("charta ---------= %c\n", exp->c);
+        
             if (exp->c == '$' && (exp->value[exp->i+1] == '$' || isdigit(exp->value[exp->i+1]) != 0))
             {
                 printf("hola\n");
@@ -176,6 +182,15 @@ char *expand_double(t_expand *exp)
         if (exp->c == '$' && exp->value[exp->i+1] != '$' && isdigit(exp->value[exp->i+1]) == 0)
         {
             // z+=1;
+            printf("hahowa dkhal\n");
+            if (exp->c == '$' && (isalnum(exp->value[exp->i+1]) == 0))
+            {
+                str = parser_get_current_char_as_string(exp->c);
+                exp->expanded = ft_strjoin(exp->expanded,str);
+                token_advance(exp);
+                // printf("expanded = %s\n", exp->expanded);
+            }
+            else{
             str2 = calloc(1, sizeof(char));
             token_advance(exp);
             while(isalnum(exp->c) != 0 )
@@ -187,15 +202,21 @@ char *expand_double(t_expand *exp)
                  str2= ft_strjoin(str2,str);
                 token_advance(exp);
             }
-            printf("user ========%s\n", str2);
+            // printf("user ========%s\n", str2);
             USER = getenv(str2);
+            if (USER == NULL && exp->type > 0 && exp->type <=4)
+            {
+                printf("$%s: ambiguous redirect\n", str2);
+                return (NULL);
+            }
             if (USER != NULL)
             {
                 exp->expanded = ft_strjoin(exp->expanded, USER);
-                printf (" expaaaaaaand %s %d\n", exp->expanded, exp->i);
+                // printf (" expaaaaaaand %s %d\n", exp->expanded, exp->i);
                 // str3[0] = 0;
             }
             free (str2);
+            }
         }
         else if (exp->c != '$')
         {
@@ -204,17 +225,17 @@ char *expand_double(t_expand *exp)
                 str = parser_get_current_char_as_string(exp->c);
                 exp->expanded = ft_strjoin(exp->expanded,str);
                 token_advance(exp);
-                printf("expanded = %s\n", exp->expanded);
+                // printf("expanded = %s\n", exp->expanded);
                 return (exp->expanded);
             }
-            printf("charta = %c\n", exp->c);
+            // printf("charta = %c\n", exp->c);
             str = parser_get_current_char_as_string(exp->c);
                 exp->expanded = ft_strjoin(exp->expanded,str);
                 token_advance(exp);
             // printf("%s z =%d \n", str2, z);
             // z++;
         }
-                    printf("charta 1111111 = %c\n", exp->c);
+                    // printf("charta 1111111 = %c\n", exp->c);
 
     }
     // printf("str2 ===== %s\n", str2);
@@ -224,7 +245,7 @@ char *expand_double(t_expand *exp)
 }
 
 
-t_token *go_expand(t_token *toke)
+t_expand *go_expand(t_token *toke)
 {
     // int i = 0;
     char *str = NULL;
@@ -237,7 +258,7 @@ t_token *go_expand(t_token *toke)
             
             expand_double(exp);
             // exp->expanded = ft_strjoin(exp->expanded, str3);
-            printf("vaaaaaaaalue --------- = %s\n", exp->expanded);
+            // printf("vaaaaaaaalue --------- = %s\n", exp->expanded);
             // printf("hahowa dkhal str = %s\n", str);
 
             
@@ -257,10 +278,10 @@ t_token *go_expand(t_token *toke)
         // printf("heloooooooooooooo==-=-4908689576895689\n");
         if (exp->c == 39)
         {
-            printf("salam cv bikhir\n");
+            // printf("salam cv bikhir\n");
             // printf("z = %d\n", i);
              expand_single(exp);
-             printf("EXpanded %s\n", exp->expanded);
+            //  printf("EXpanded %s\n", exp->expanded);
             // i++;
             // str3 = ft_strjoin(str3, str);
             // while (toke->value[i] != 39)
@@ -299,34 +320,37 @@ t_token *go_expand(t_token *toke)
         // printf("finaaaaaaaal ----- z = %d = \n%c\n", i, toke->value[i]);
     }
     printf("finaaaaaaaal = \n%s\n", exp->expanded);
-    return (toke);
+    return (exp);
 }
-t_token *check_toke(t_token *toke)
+t_expand *check_toke(t_token *toke)
 {
     int i = 0;
+    t_expand *exp = NULL;
     while (toke->value[i])
     {
         if (toke->value[i] == '$')
         {
-            go_expand(toke);
+            exp = go_expand(toke);
             break;
         }
         i++;
     }
-    return (toke);
+    return (exp);
 }
-t_token *ft_expand(t_token *toke)
+t_expand *ft_expand(t_token *toke)
 {
     t_token *tmp = NULL;
+    t_expand*exp2 = NULL;
     tmp = toke;
     while (toke)
     {
         if (toke->type != 5 && toke->type != 3)
         {
-            toke = check_toke(toke);
+            exp2 = check_toke(toke);
         }
+        // exp2 = exp2->next;
         toke = toke->next;
     }
     toke = tmp;
-    return (toke);
+    return (exp2);
 }
