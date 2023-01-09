@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 18:24:28 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/07 01:26:01 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/08 01:11:28 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ char *expand_double(t_expand *exp)
 }
 
 
-t_expand *go_expand(t_token *toke)
+t_token *go_expand(t_token *toke)
 {
     // int i = 0;
     char *str = NULL;
@@ -320,37 +320,54 @@ t_expand *go_expand(t_token *toke)
         // printf("finaaaaaaaal ----- z = %d = \n%c\n", i, toke->value[i]);
     }
     printf("finaaaaaaaal = \n%s\n", exp->expanded);
-    return (exp);
+    toke->value = exp->expanded;
+    return (toke);
 }
-t_expand *check_toke(t_token *toke)
+t_token *check_toke(t_token *toke)
 {
     int i = 0;
-    t_expand *exp = NULL;
+    // t_expand *exp = NULL;
     while (toke->value[i])
     {
         if (toke->value[i] == '$')
         {
-            exp = go_expand(toke);
+            toke = go_expand(toke);
             break;
         }
         i++;
     }
-    return (exp);
+    return (toke);
 }
-t_expand *ft_expand(t_token *toke)
+t_token *ft_expand(t_token *toke)
 {
     t_token *tmp = NULL;
-    t_expand*exp2 = NULL;
+    // t_expand*exp2 = NULL;
+    // t_expand *tmp2 = NULL;
     tmp = toke;
+    // if (toke->type != 5 && toke->type != 3)
+    // {
+    //      exp2 = check_toke(toke);
+    //      printf("hola\n");
+    //      toke = toke->next;
+    // }
+    // tmp2 = exp2;
     while (toke)
     {
         if (toke->type != 5 && toke->type != 3)
         {
-            exp2 = check_toke(toke);
+            toke = check_toke(toke);
+            printf("expaaaaaaaaaaaaand = %s\n", toke->value);
         }
         // exp2 = exp2->next;
         toke = toke->next;
     }
     toke = tmp;
-    return (exp2);
+    while (toke)
+    {
+        printf("tokekkkkkkk%s\n", toke->value);
+        toke = toke->next;
+    }
+    toke = tmp;
+    // exp2 = tmp2;
+    return (toke);
 }

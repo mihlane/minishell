@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 11:52:41 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/07 19:19:07 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/08 19:33:15 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ typedef struct token
         TOKEN_ERR,
     } tkn;
     int type;
-    char *value;
+    char *value; //$USER
     char c;
     struct token *next;
 }t_token;
+
+//rd2 = >>  append out | rd1 = > output | rd3 = <<  herdoc| rd4 = < input
+
+
+
 
 typedef struct expand
 {
@@ -42,8 +47,16 @@ typedef struct expand
     char c;
     char *expanded;
     int syntax;
-    struct expand *next;
+    // struct expand *next;
 }t_expand;
+
+typedef struct s_command_node
+{
+    char                    **cmd;
+    int                        infile;
+    int                        outfile;
+    struct s_command_node    *next;
+}    t_command;
 
 t_expand* init_expand(t_token *toke);
 // void token_skip_whitespace(t_token* lexer);

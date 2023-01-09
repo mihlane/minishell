@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 01:34:57 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/07 01:22:58 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/08 19:48:34 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define    LEXER_H
 
 #include "token.h"
+#include<fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
@@ -48,7 +49,7 @@ t_token* lexer_advance_with_token(t_lexer* lexer, t_token* token);
 
 char* lexer_get_current_char_as_string(t_lexer* lexer);
 t_token* init_token(int type, char* value);
-t_expand *ft_expand(t_token *toke);
+t_token *ft_expand(t_token *toke);
 char	*ft_strjoin(char *s1, char *s2);
 char* parser_get_current_char_as_string(char c);
 char * lexer_collect_string2(t_lexer* lexer);
