@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 18:24:28 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/08 01:11:28 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:19:41 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,7 +356,7 @@ t_token *ft_expand(t_token *toke)
         if (toke->type != 5 && toke->type != 3)
         {
             toke = check_toke(toke);
-            printf("expaaaaaaaaaaaaand = %s\n", toke->value);
+            // printf("expaaaaaaaaaaaaand = %s\n", toke->value);
         }
         // exp2 = exp2->next;
         toke = toke->next;
@@ -364,7 +364,7 @@ t_token *ft_expand(t_token *toke)
     toke = tmp;
     while (toke)
     {
-        printf("tokekkkkkkk%s\n", toke->value);
+        // printf("tokekkkkkkk%s\n", toke->value);
         toke = toke->next;
     }
     toke = tmp;

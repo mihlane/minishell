@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 01:34:57 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/08 19:48:34 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:52:52 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
+#include "get_next_line.h"
 typedef struct lexer
 {
     char **args;

@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/09 06:02:14 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/11 01:56:47 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,53 @@
 #include <unistd.h>
 #include <string.h>
 #include "token.h"
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+char	*ft_strjoin2(char *s1, char *s2)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = -1;
+	j = 0;
+	if (!s1)
+	{
+		s1 = (char *)malloc(1 * sizeof(char));
+		s1[0] = '\0';
+	}
+	if (!s1 || !s2)
+		return (NULL);
+	str = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	if (s1)
+		while (s1[++i] != '\0')
+			str[i] = s1[i];
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
+	str[i] = '\0';
+	// free(s2);
+	return (str);
+}
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (s != NULL)
+	{
+		while (s[i])
+		{
+			ft_putchar_fd(s[i], fd);
+			i++;
+		}
+	}
+}
 
 int ft_open1(char *str)
 {
@@ -30,24 +77,63 @@ int ft_open1(char *str)
 int ft_open2(char *str)
 {
     int fd;
-    fd = open(str, O_RDONLY | O_CREAT);
+    fd = open(str, O_RDONLY);
     if (fd == -1)
         return (-1);
     return (fd);
     
 }
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] == s2[i] && s1[i] && s2[i] && i < n - 1)
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int size(char *str, char *del)
+{
+    int s = ft_strlen(str);
+    int d = ft_strlen(del);
+    if (d > s)
+        return d;
+    return s;
+}
+
+void    fun(int fd, char *delimeter)
+{
+    char    *line;
+
+    line = get_next_line(0);
+    while (line)
+    {
+        if ((strcmp(line, delimeter) && (strlen (line)- 1 == strlen(delimeter))) || !line[0])
+            break ;
+        ft_putstr_fd(line, fd);
+        free (line);
+        line = get_next_line(0);
+    }
+}
+
 int ft_open3(char *str)
 {
     int fd;
-    fd = open(str, O_RDONLY | O_CREAT);
+    fd = open(ft_strjoin2("/tmp/", str),  O_CREAT | O_WRONLY);
     if (fd == -1)
         return (-1);
+    fun(fd, str);
     return (fd);
     
 }
 int ft_open4(char *str)
 {
     int fd;
+    printf("file discriptor kayn hna \n");
     fd = open(str, O_RDONLY | O_CREAT);
     if (fd == -1)
         return (-1);
@@ -115,22 +201,51 @@ char **get_cmd(t_token **toke)
         *toke = (*toke)->next;
     }
     str[z] = NULL;
-    z = 0;
+    // z = 0;
     // while (z++ < i - 1)
     //     printf("str ============================== %s\n", str[z]);
     return (str);
 }
 
 
-t_command	*create_node(char **value)
+t_command	*create_node(t_token **toke)
 {
 	t_command	*new_node;
-
+       char **str;
+       
 	new_node = malloc(sizeof(t_command));
 	new_node->next = NULL;
-	new_node->cmd = value;
     new_node->infile = -2;
     new_node->outfile = -2;
+    int z = 0;
+    int total_cmds = get_total_args(*toke);
+    str = (char **)malloc(sizeof(char*) * (total_cmds  + 1));
+    while (*toke && (*toke)->type != 5)
+    {
+        // printf("dfk token type= %d\n", (*toke)->type);
+            // printf("dk-----------------------khal hna\n");
+        if ((*toke)->type == 1)
+            new_node->outfile = ft_open1((*toke)->value);
+        if ((*toke)->type == 2)
+        {
+            new_node->outfile = ft_open2((*toke)->value);
+        }
+        if ((*toke)->type == 3)
+            new_node->infile = ft_open3((*toke)->value);
+        if ((*toke)->type == 4)
+           new_node->infile = ft_open4((*toke)->value);
+        if ((*toke)->type == 0)
+        {
+            str[z] = strdup((*toke)->value);
+            // printf("str ============================== %s\n", str[z]);
+            z++;
+        }
+        if ((*toke)->type == 6)
+            break;
+        //     cmd = cmd->next;
+        *toke = (*toke)->next;
+    }
+	new_node->cmd = str;
 	return (new_node);
 }
 
@@ -139,7 +254,7 @@ t_command	*ft_init(t_command **node, t_token **token)
 	t_command	*new_node;
 	t_command	*tmp;
     tmp = *node;
-	new_node = create_node(get_cmd(token));
+	new_node = create_node(token);
 	if (*node == NULL)
 	{
 		*node = new_node;
@@ -172,35 +287,35 @@ t_command *init_struct(t_token *toke)
     while (tmp)
     {
         
-        if (tmp->type == 1)
-            cmd->outfile = ft_open1(tmp->value);
-        if (tmp->type == 2)
-            cmd->outfile = ft_open2(tmp->value);
-        if (tmp->type == 3)
-            cmd->infile = ft_open3(tmp->value);
-        if (tmp->type == 4)
-           cmd->infile = ft_open4(tmp->value);
-        if (tmp->type == 0)
-        {
+        // if (tmp->type == 1)
+        //     cmd->outfile = ft_open1(tmp->value);
+        // if (tmp->type == 2)
+        //     cmd->outfile = ft_open2(tmp->value);
+        // if (tmp->type == 3)
+        //     cmd->infile = ft_open3(tmp->value);
+        // if (tmp->type == 4)
+        //    cmd->infile = ft_open4(tmp->value);
+        // if (tmp->type == 0)
+        // {
+        // printf(" I am HERE !!\n");
             ft_init(&cmd, &tmp);
-        }
-        printf(" I am HERE !!\n");
+        // }÷
         if (tmp)
             tmp = tmp->next;
     }
-    
+    // printf("{%s}\n", cmd->cmd[0]);
     // cmd = tmp2;
-    int f = 0;
-    while (cmd)
-    {
-        printf("cmd: %d ==> |", f);
-        int i = 0;
-        while (cmd->cmd[i])
-            printf("%s ", cmd->cmd[i++]);
-        printf("|\n");
-        cmd = cmd->next;
-        f++;
-    }
+//    int f = 0;
+//     while (cmd)
+//     {
+//         printf("cmd: %d ==> |", f);
+//         int i = 0;
+//         while (cmd->cmd[i])
+//             printf("%s ", cmd->cmd[i++]);
+//         printf("|\n");
+//         cmd = cmd->next;
+//         f++;
+//     }
     return (cmd);
 }
 
@@ -240,7 +355,7 @@ t_token *rmv_quotes(t_token *exp)
             i++;
     }
     str2[z] = 0;
-    printf("toke after removing = %s\n", str2);
+    // printf("toke after removing = %s\n", str2);
     exp->value = str2;
     exp = exp->next;
     }
@@ -303,7 +418,7 @@ t_token    *lexi(char *str)
         //     lex->synt = -1;
         //     return NULL;
         // }
-        printf("token  = %s token type %d \n", toke->value, toke->type);
+        // printf("token  = %s token type %d \n", toke->value, toke->type);
         // printf("token next = %d\n", toke->type);
         // printf("token next = %s\n", toke->value);
         i++;
@@ -341,7 +456,7 @@ int main(int ac, char **av)
             // printf("expanded = %s\n", exp->expanded);
             // exp = exp->next;
         // }
-        printf("holaaaaaaa\n");
+        // printf("holaaaaaaa\n");
     // printf("%s\n", str);
 }
 }
@@ -367,3 +482,8 @@ int main(int ac, char **av)
 // //"$PATH....$USER'$LLL',,,123$L$USER"
 //echo $
 //echo hello world | echo "'$USER'"      kan 7ayed 7ta l quotes lwestaniyin
+
+
+
+//herdoc = kat openi file katkteb fih o ay 7aja tketbat katcompara m3a delimitr bach ytcolsa l file
+// ctrl d in herdoc 

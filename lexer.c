@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/07 00:33:25 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/11 01:37:17 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ t_token* lexer_get_next_token(t_lexer* lexer)
         }
            if (lexer->c == '<' && lexer->line[lexer->i+1] == '<')
         {
-            printf("hola rd 3 %c %c \n", lexer->c,lexer->line[lexer->i+1] );
+            // printf("hola rd 3 %c %c \n", lexer->c,lexer->line[lexer->i+1] );
             took = lexer_collect_redirect3(lexer);
             return (took);
             // printf("took = %s\n", took->value);
