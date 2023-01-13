@@ -6,12 +6,13 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:27 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/11 01:37:17 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/12 03:40:56 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "token.h"
+
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -113,9 +114,9 @@ t_token *lexer_collect_redirect2(t_lexer *lexer)
         // return NULL;
     }
     if (lexer->synt == -1)
-        return init_token(TOKEN_ERR, value);
+        return init_token(TOKEN_ERR, value, 1);
         
-    return init_token(TOKEN_RD2, value);
+    return init_token(TOKEN_RD2, value, 1);
 }
 t_token *lexer_collect_redirect1(t_lexer *lexer)
 {
@@ -160,13 +161,14 @@ t_token *lexer_collect_redirect1(t_lexer *lexer)
         // return NULL;
     }
     if (lexer->synt == -1)
-        return init_token(TOKEN_ERR, value);
-    return init_token(TOKEN_RD1, value);
+        return init_token(TOKEN_ERR, value, 1);
+    return init_token(TOKEN_RD1, value, 1);
 }
 t_token *lexer_collect_redirect3(t_lexer *lexer)
 {
     char* s;
     char* value = calloc(1, sizeof(char));
+    int z = 1;
     lexer_advance(lexer);
     lexer_advance(lexer);
     lexer_skip_whitespace(lexer);
@@ -185,11 +187,13 @@ t_token *lexer_collect_redirect3(t_lexer *lexer)
         {
             value =  ft_strjoin( value, lexer_collect_string(lexer));
             // return (took);
+            z = -1;
         }
        else if  (lexer->c == 39)
         {
             value =  ft_strjoin( value, lexer_collect_string2(lexer));
             // return (took);
+            z = -1;
         }
          if (lexer->c == ' ' || lexer->c == 10)
         break;
@@ -208,8 +212,8 @@ t_token *lexer_collect_redirect3(t_lexer *lexer)
         // return NULL;
     }
     if (lexer->synt == -1)
-        return init_token(TOKEN_ERR, value);
-    return init_token(TOKEN_RD3, value);
+        return init_token(TOKEN_ERR, value, z);
+    return init_token(TOKEN_RD3, value, z);
 }
 t_token *lexer_collect_redirect4(t_lexer *lexer)
 {
@@ -256,9 +260,9 @@ t_token *lexer_collect_redirect4(t_lexer *lexer)
         // return NULL;
     }
     if (lexer->synt == -1)
-        return init_token(TOKEN_ERR, value);
+        return init_token(TOKEN_ERR, value, (int)ft_strlen(value));
     printf("hahowa ja\n");
-    return init_token(TOKEN_RD4, value);
+    return init_token(TOKEN_RD4, value, (int)ft_strlen(value));
 }
 
 char * lexer_collect_string2(t_lexer* lexer)
@@ -351,8 +355,8 @@ t_token* lexer_get_next_token(t_lexer* lexer)
                 // return NULL;
             }
             if (lexer->synt == -1)
-                return init_token(TOKEN_ERR, "pipe");
-            took = init_token(TOKEN_PIPE, "pipe");
+                return init_token(TOKEN_ERR, "pipe", 1);
+            took = init_token(TOKEN_PIPE, "pipe", 1);
             return (took);
          }
         // if (lexer->c == '"')
@@ -376,7 +380,7 @@ t_token* lexer_get_next_token(t_lexer* lexer)
 
     }
     // return NULL;
-    return init_token(TOKEN_EOF, "\0");
+    return init_token(TOKEN_EOF, "\0", 1);
 }
 
 char * lexer_collect_string(t_lexer* lexer)
@@ -454,7 +458,7 @@ t_token* lexer_collect_id(t_lexer* lexer)
         // strcat(value, s);
 
     }
-    return init_token(TOKEN_ID, value);
+    return init_token(TOKEN_ID, value, 1);
 }
 
 char* lexer_get_current_char_as_string(t_lexer* lexer)
@@ -465,13 +469,17 @@ char* lexer_get_current_char_as_string(t_lexer* lexer)
 
     return str;
 }
-t_token* init_token(int type, char* value)
+t_token* init_token(int type, char* value, int z)
 {
     t_token* token = malloc(sizeof(t_token));
     token->i++;
     token->type = type;
     token->value = value;
     token->next = NULL;
+    if (z > 0)
+        token->herd = 0;
+    else
+        token->herd = -1;
 
     return token;
 }

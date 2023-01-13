@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/11 01:56:47 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/13 03:21:55 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int size(char *str, char *del)
     return s;
 }
 
-void    fun(int fd, char *delimeter)
+void    fun(int fd, char *delimeter, int i)
 {
     char    *line;
 
@@ -114,19 +114,24 @@ void    fun(int fd, char *delimeter)
     {
         if ((strcmp(line, delimeter) && (strlen (line)- 1 == strlen(delimeter))) || !line[0])
             break ;
+        if (i != -1)
+        {
+            printf("a\n");
+            line = ft_expandd(line);
+        }
         ft_putstr_fd(line, fd);
         free (line);
         line = get_next_line(0);
     }
 }
 
-int ft_open3(char *str)
+int ft_open3(char *str, int i)
 {
     int fd;
     fd = open(ft_strjoin2("/tmp/", str),  O_CREAT | O_WRONLY);
     if (fd == -1)
         return (-1);
-    fun(fd, str);
+    fun(fd, str, i);
     return (fd);
     
 }
@@ -231,7 +236,7 @@ t_command	*create_node(t_token **toke)
             new_node->outfile = ft_open2((*toke)->value);
         }
         if ((*toke)->type == 3)
-            new_node->infile = ft_open3((*toke)->value);
+            new_node->infile = ft_open3((*toke)->value, (*toke)->herd);
         if ((*toke)->type == 4)
            new_node->infile = ft_open4((*toke)->value);
         if ((*toke)->type == 0)
@@ -319,12 +324,71 @@ t_command *init_struct(t_token *toke)
     return (cmd);
 }
 
+char *expand_double2(char *str, int i)
+{
+    char *str2;
+    char *str3;
+    str3 = parser_get_current_char_as_string(0);
+    i++;
+    while (str[i])
+    {
+        if (str[i] == '"')
+            break;
+        str2 = parser_get_current_char_as_string(str[i]);
+        str3 = ft_strjoin(str3, str2);
+        i++;
+    }
+    return (str3);
+    
+}
+char *expand_single2(char *str, int i)
+{
+    char *str2;
+    char *str3;
+    str3 = parser_get_current_char_as_string(0);
+    i++;
+    while (str[i])
+    {
+        if (str[i] == 39)
+            break;
+        str2 = parser_get_current_char_as_string(str[i]);
+        str3 = ft_strjoin(str3, str2);
+        i++;
+    }
+    return (str3);
+    
+}
+
+int get_index_double(char *str, int i)
+{
+    i++;
+    while (str[i])
+        {
+            if (str[i] == '"')
+                break;
+            i++;
+        }
+        i++;
+        return (i);
+}
+int get_index_single(char *str, int i)
+{
+    i++;
+    while (str[i])
+        {
+            if (str[i] == 39)
+                break;
+            i++;
+        }
+        i++;
+        return (i);
+}
 
 t_token *rmv_quotes(t_token *exp)
 {
-    int k;
+    // int k;
     int i = 0;
-    int z = 0;
+    // int z = 0;
     char *str2 = NULL;
     t_token *tmp;
     tmp = exp;
@@ -332,29 +396,47 @@ t_token *rmv_quotes(t_token *exp)
     while (exp)
     {
     i = 0;
-    z = 0;
-    while (exp->value[i])
+    // z = 0;
+    while (exp->value[i] && i < (int)strlen(exp->value))
     {
-        if (exp->value[i] == '"' || exp->value[i] == 39)
-            z++;
-        i++;
-    }
-    k = i - z;
-    str2 = malloc(sizeof(char) * ((i - z) + 1));
-    i = 0;
-    z = 0;
-    while (z < k)
-    {
-        if (exp->value[i] != '"' && exp->value[i] != 39)
+        if (exp->value[i] == 0)
+            break;
+        if (exp->value[i] == '"')
         {
-            str2[z] = exp->value[i];
-            z++;
-            i++;
+            str2 = ft_strjoin(str2, expand_double2(exp->value, i));
+            i = get_index_double(exp->value,i);
+            printf("%d\n", i);
         }
-        else
-            i++;
+        if (exp->value[i] && exp->value[i] == 39)
+        {
+            str2 = ft_strjoin(str2, expand_single2(exp->value, i));
+            i = get_index_single(exp->value, i);
+        }
+        else if (exp->value[i] && exp->value[i] != '"' && exp->value[i] != 39)
+            {
+                str2 = ft_strjoin(str2, parser_get_current_char_as_string(exp->value[i]));
+                i++;
+            }
+        printf("str2 ==== %s i = %d\n", str2, i);
+        // i++;
     }
-    str2[z] = 0;
+    // k = i - z;
+    printf("quooooots %s\n", exp->value);
+    // str2 = malloc(sizeof(char) * ((i - z) + 1));
+    // i = 0;
+    // z = 0;
+    // while (z < k)
+    // {
+    //     if (exp->value[i] != '"' && exp->value[i] != 39)
+    //     {
+    //         str2[z] = exp->value[i];
+    //         z++;
+    //         i++;
+    //     }
+    //     else
+    //         i++;
+    // }
+    // str2[i] = 0;
     // printf("toke after removing = %s\n", str2);
     exp->value = str2;
     exp = exp->next;

@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 11:52:41 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/08 19:33:15 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:53:48 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct token
     int type;
     char *value; //$USER
     char c;
+    int herd;
     struct token *next;
 }t_token;
 
@@ -59,6 +60,7 @@ typedef struct s_command_node
 }    t_command;
 
 t_expand* init_expand(t_token *toke);
+char    *ft_expandd(char *str);
 // void token_skip_whitespace(t_token* lexer);
 // void token_advance(t_token* lexer);
 // "$ USER"
