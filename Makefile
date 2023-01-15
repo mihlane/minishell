@@ -6,11 +6,11 @@ SRCS  = read.c\
 		lexi_toke.c\
 		get_next_line.c\
 		get_next_line_utils.c\
-		expand_herdoc.c\
+		expand_herdoc.c ft_strncmp.c
 
 CC = @cc
 
-FLAGS = -Wall -Wextra -Werror -lreadline -g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -lreadline 
 
 all : $(NAME)
 $(NAME) : $(SRCS) 

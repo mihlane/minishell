@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/14 04:51:11 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:03:59 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,50 @@
 #include <readline/history.h>
 #include <unistd.h>
 #include <string.h>
-#include "token.h"
+#include "includes/execution.h"
 
 
-int	ft_count(int n)
-{
-	int	count;
+// int	ft_count(int n)
+// {
+// 	int	count;
 
-	count = 0;
-	if (n == 0)
-		count++;
-	while (n != 0)
-	{
-		n = n / 10;
-		count++;
-	}
-	return (count);
-}
+// 	count = 0;
+// 	if (n == 0)
+// 		count++;
+// 	while (n != 0)
+// 	{
+// 		n = n / 10;
+// 		count++;
+// 	}
+// 	return (count);
+// }
 
-char	*ft_itoa(int n)
-{
-	char		*str;
-	int			i;
-	long int	nb;
+// char	*ft_itoa(int n)
+// {
+// 	char		*str;
+// 	int			i;
+// 	long int	nb;
 
-	nb = n;
-	i = ft_count(n);
-	if (nb < 0)
-	{
-		nb *= -1;
-		i++;
-	}
-	str = malloc(i + 1);
-	if (!str)
-		return (NULL);
-	str[i] = '\0';
-	while (i--)
-	{
-		str[i] = (nb % 10) + '0';
-		nb = nb / 10;
-	}
-	if (n < 0)
-		str[0] = '-';
-	return (str);
-}
+// 	nb = n;
+// 	i = ft_count(n);
+// 	if (nb < 0)
+// 	{
+// 		nb *= -1;
+// 		i++;
+// 	}
+// 	str = malloc(i + 1);
+// 	if (!str)
+// 		return (NULL);
+// 	str[i] = '\0';
+// 	while (i--)
+// 	{
+// 		str[i] = (nb % 10) + '0';
+// 		nb = nb / 10;
+// 	}
+// 	if (n < 0)
+// 		str[0] = '-';
+// 	return (str);
+// }
 void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
@@ -116,6 +116,7 @@ int ft_open1(char *str)
     return (fd);
     
 }
+
 int ft_open2(char *str)
 {
     int fd;
@@ -174,7 +175,7 @@ void    fun(int fd, char *delimeter, int i)
         if (line[0] != '\n')
             line = remove_new_line(line);
         printf("{%s}\n", line);
-        if ( !ft_strncmp(line, delimeter) || !line[0])
+        if ( !ft_strncmpp(line, delimeter) || !line[0])
             break ;
         if (i != -1)
         {
@@ -253,42 +254,42 @@ int get_total_args(t_token *toke)
     return i;  
 }
 
-char **get_cmd(t_token **toke)
-{
-    // t_token *tmp = toke;
-    char **str;
-    int z = 0;
-    int total_cmds = get_total_args(*toke);
-    str = (char **)malloc(sizeof(char*) * (total_cmds  + 1));
-    while (*toke && z < total_cmds)
-    {
-        if ((*toke)->type == 0)
-        {
-            str[z] = strdup((*toke)->value);
-            printf("str ============================== %s\n", str[z]);
-            z++;
-        }
-        // if (toke->type == 5)
-        //     cmd = cmd->next;
-        *toke = (*toke)->next;
-    }
-    str[z] = NULL;
-    // z = 0;
-    // while (z++ < i - 1)
-    //     printf("str ============================== %s\n", str[z]);
-    return (str);
-}
+// char **get_cmd(t_token **toke)
+// {
+//     // t_token *tmp = toke;
+//     char **str;
+//     int z = 0;
+//     int total_cmds = get_total_args(*toke);
+//     str = (char **)malloc(sizeof(char*) * (total_cmds  + 1));
+//     while (*toke && z < total_cmds)
+//     {
+//         if ((*toke)->type == 0)
+//         {
+//             str[z] = strdup((*toke)->value);
+//             // printf("str ============================== %s\n", str[z]);
+//             z++;
+//         }
+//         // if (toke->type == 5)
+//         //     cmd = cmd->next;
+//         *toke = (*toke)->next;
+//     }
+//     str[z] = NULL;
+//     // z = 0;
+//     // while (z++ < i - 1)
+//     //     printf("str ============================== %s\n", str[z]);
+//     return (str);
+// }
 
 
-t_command	*create_node(t_token **toke)
+t_command	* create_node(t_token **toke)
 {
 	t_command	*new_node;
        char **str;
        
 	new_node = malloc(sizeof(t_command));
 	new_node->next = NULL;
-    new_node->infile = -2;
-    new_node->outfile = -2;
+    new_node->infile = 0;
+    new_node->outfile = 1;
     int z = 0;
     int h = 0;
     int total_cmds = get_total_args(*toke);
@@ -315,14 +316,24 @@ t_command	*create_node(t_token **toke)
         if ((*toke)->type == 0)
         {
             str[z] = strdup((*toke)->value);
+            
             z++;
         }
         if ((*toke)->type == 6)
             break;
         //     cmd = cmd->next;
+        if ((*toke)->type == 5)
+        {
+            *toke = (*toke)->next;
+            break;
+        }
         *toke = (*toke)->next;
+        
     }
+    str[z] = 0;
+    // int i = 0;
 	new_node->cmd = str;
+    (*toke)->envp->num_pipe++;
 	return (new_node);
 }
 
@@ -359,7 +370,7 @@ t_command *init_struct(t_token *toke)
     // }  
     
     // tmp2 = cmd;
-
+int z  = 0;
     // open files
     tmp = toke;
     while (tmp)
@@ -381,7 +392,15 @@ t_command *init_struct(t_token *toke)
         // }÷
         if (tmp)
             tmp = tmp->next;
+            z++;
     }
+
+    // int i = 0;
+    //     while (i <= z)
+    // {
+    //     printf("exp = %s\n", cmd->cmd[i]);
+    //     i++;
+    // }
     // printf("{%s}\n", cmd->cmd[0]);
     // cmd = tmp2;
 //    int f = 0;
@@ -517,7 +536,9 @@ t_token *rmv_quotes(t_token *exp)
     // }
     // str2[i] = 0;
     // printf("toke after removing = %s\n", str2);
-    free(tmp->value);
+        // printf("str ============================== \n");
+
+    // free(tmp->value);
     tmp->value = strdup(str2);
     free (str2);
     str2 = NULL;
@@ -597,13 +618,21 @@ t_token    *lexi(char *str)
     // printf("tokken = %s\n", toke->value);
     // printf("token next = %s\n", toke->next->value);
 }
-int main(int ac, char **av)
+int main(int ac, char **av, char **env)
 {
     char *str;
     t_token *toke;
     t_command *cmds = NULL;
+    t_envp	*my_env;
+
+	my_env = (t_envp *)malloc(sizeof(t_envp));
+	my_env->pwd = getcwd(NULL, 0);
+	my_env->status = 0;
+	my_env->num_pipe = -1;
+
     // t_expand *exp = NULL;
     (void)av;
+    fill_env(env, my_env);
     while (ac)
 {
     str = readline("\033[0;32m~ minishell\x1b[0m "); // TODO remove comments on this line
@@ -614,8 +643,25 @@ int main(int ac, char **av)
     {
         toke = ft_expand(toke);
         toke = rmv_quotes(toke);
-        // printf("str ============================== %s\n",toke->value );
         cmds = init_struct(toke);
+
+        while (cmds)
+        {
+            my_env->num_pipe++;
+            cmds = cmds->next;
+        }
+        // int i = 0;
+// while (cmds)
+// {
+//     // while (i < 2)
+//     // {
+//         printf("str dyal z = {%s} i = %d\n", cmds->cmd[0], i);
+//         printf("str dyal z = {%s} i = %d\n", cmds->cmd[1], i);
+//         i++;
+//     // }
+//     cmds = cmds->next;
+// }
+        execution(cmds, my_envp);
     }
         
         // while (exp->next != NULL)

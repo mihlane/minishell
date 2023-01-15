@@ -6,37 +6,36 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 18:24:28 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/14 02:05:53 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/14 18:34:10 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
-#include "token.h"
+#include "includes/execution.h"
 
 
-char	*ft_substr(char *str, size_t start, size_t len)
-{
-	size_t	i;
-	size_t	l;
-	char	*sub;
+// char	*ft_substr(char *str, size_t start, size_t len)
+// {
+// 	size_t	i;
+// 	size_t	l;
+// 	char	*sub;
 
-	sub = malloc(sizeof(char) * len + 1);
-	if (!sub)
-		return (NULL);
-	i = 0;
-	l = 0;
-	while (str[i])
-	{
-		if (i >= start && l < len)
-		{
-			sub[l] = str[i];
-			l++;
-		}
-		i++;
-	}
-	sub[l] = '\0';
-	return (sub);
-}
+// 	sub = malloc(sizeof(char) * len + 1);
+// 	if (!sub)
+// 		return (NULL);
+// 	i = 0;
+// 	l = 0;
+// 	while (str[i])
+// 	{
+// 		if (i >= start && l < len)
+// 		{
+// 			sub[l] = str[i];
+// 			l++;
+// 		}
+// 		i++;
+// 	}
+// 	sub[l] = '\0';
+// 	return (sub);
+// }
 
 //"$HOME'$HOME'"'"$HOME"'
 //""'"'$USER'"'
