@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 11:52:41 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/15 12:55:49 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:11:37 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct token
     char *value; //$USER
     char c;
     int herd;
-    t_envp *envp;
     struct token *next;
 }t_token;
 

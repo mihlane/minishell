@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:42:37 by rarahhal          #+#    #+#             */
-/*   Updated: 2023/01/15 12:50:51 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:41:58 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,12 @@ void	execution(t_command *list, t_envp *my_env)
 {
 	// handle_signals(SIG_CHILD);
 	// check_list(&list);
-	printf("{%s}\n", list->cmd[0]);
+
+	
 	// printf("{%s}\n", list->cmd[1]);
 	// printf("{%s}\n", list->cmd[0]);
-	pipes(2, list, my_env);
+	pipes(my_env->num_pipe, list, my_env);
+
 	// handle_signals(SIGINT);
 	// handle_signals(SIGQUIT);
 }

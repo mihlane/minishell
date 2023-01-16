@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 16:18:07 by lsemlali          #+#    #+#             */
-/*   Updated: 2023/01/15 12:42:32 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:17:58 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	one_cmd(t_envp *my_env, t_command *cmd)
 {
 	char	*path;
 
-	printf("thi ---- ---- >> %s\n", cmd->cmd[0]);
-	printf("thi ---- ---- >> %s\n", cmd->cmd[1]);
 	path = get_path(handle_env(my_env->env), cmd->cmd[0]);
 	if (cmd->infile != 0)
 	{

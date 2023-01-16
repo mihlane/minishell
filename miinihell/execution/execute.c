@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 16:18:40 by lsemlali          #+#    #+#             */
-/*   Updated: 2023/01/15 12:39:14 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:26:36 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	child(t_pipe *p, int k, t_command *cmd, t_envp *my_env)
 		multiple_p(p, k, cmd, my_env);
 	else
 	{
-		printf("here\n");
 		p->pid1 = fork();
 		if (p->pid1 == -1)
 			putstr_fd("minishell: fork: Resource temporarily unavailable\n", 2);

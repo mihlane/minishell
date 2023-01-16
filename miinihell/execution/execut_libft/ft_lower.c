@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 16:17:42 by lsemlali          #+#    #+#             */
-/*   Updated: 2023/01/15 00:45:55 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:29:16 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*lo_wer(char *s)
 	char	*low;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	low = malloc(ft_strlen(s) + 1);
 	// printf("helo\n");
 	while (s[i])

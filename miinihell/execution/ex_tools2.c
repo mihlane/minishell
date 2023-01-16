@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 16:18:25 by lsemlali          #+#    #+#             */
-/*   Updated: 2023/01/15 01:38:49 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:17:28 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	*get_path(char *s, char *cmd)
 	char	**sp;
 	char	*tmp;
 
-	printf("{%s}\n", cmd);
+	if (!cmd)
+		return (NULL);
 	if (sea_rch(cmd, '/'))
 	{
 		free(s);

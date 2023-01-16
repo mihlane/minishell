@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 01:51:11 by mhabibi-          #+#    #+#             */
-/*   Updated: 2023/01/15 13:03:59 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 23:13:39 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ void	ft_putstr_fd(char *s, int fd)
 int ft_open1(char *str)
 {
     int fd;
-    fd = open(str, O_RDONLY | O_CREAT);
+
+    fd = open(str, O_RDONLY);
     if (fd == -1)
         return (-1);
     return (fd);
@@ -120,7 +121,8 @@ int ft_open1(char *str)
 int ft_open2(char *str)
 {
     int fd;
-    fd = open(str, O_RDONLY);
+   
+    fd = open(str,  O_CREAT | O_WRONLY );
     if (fd == -1)
         return (-1);
     return (fd);
@@ -161,22 +163,27 @@ char    *remove_new_line(char *line)
         i++;
     }
     s[i] = '\0';
-    free(line);
+    // free(line);
     return (s);
 }
 
 void    fun(int fd, char *delimeter, int i)
 {
     char    *line;
+    char    *tmp;
 
     line = get_next_line(0);
     while (line)
     {
-        if (line[0] != '\n')
-            line = remove_new_line(line);
-        printf("{%s}\n", line);
-        if ( !ft_strncmpp(line, delimeter) || !line[0])
+        // if (line[0] != '\n')
+        //     line = remove_new_line(line);
+        tmp = remove_new_line(line);
+        if ( !ft_strncmpp(tmp, delimeter) || !line[0])
+        {
+            free(tmp);
             break ;
+        }
+        free(tmp);
         if (i != -1)
         {
             // printf("a\n");x
@@ -187,7 +194,6 @@ void    fun(int fd, char *delimeter, int i)
         free (line);
         line = get_next_line(0);
     }
-    printf("line is ->{%s}\n", line);
 }
 
 int ft_open3(char *str, int i, int h)
@@ -199,6 +205,7 @@ int ft_open3(char *str, int i, int h)
     if (fd == -1)
         return (-1);
     fun(fd, str, i);
+    fd = open(ft_strjoin2("/tmp/", s), O_RDONLY , 0777);
     free(s);
     return (fd);
     
@@ -206,7 +213,6 @@ int ft_open3(char *str, int i, int h)
 int ft_open4(char *str)
 {
     int fd;
-    printf("file discriptor kayn hna \n");
     fd = open(str, O_RDONLY | O_CREAT);
     if (fd == -1)
         return (-1);
@@ -228,8 +234,7 @@ int get_total_cmds(t_token *toke)
         //     i++;
         toke = toke->next;
     }
-    printf("------------%d\n", i);
-    return (i + 1);
+        return (i + 1);
     toke = tmp;
     // str = malloc(sizeof(char*) * i);
     // while (toke && z < i)
@@ -297,15 +302,10 @@ t_command	* create_node(t_token **toke)
             // printf("str ============================== %s\n",(*toke)->value );
     while (*toke && (*toke)->type != 5)
     {
-        // printf("dfk token type= %d\n", (*toke)->type);
-        // printf("helo\n");
-            // printf("dk-----------------------khal hna\n");
         if ((*toke)->type == 1)
             new_node->outfile = ft_open1((*toke)->value);
         if ((*toke)->type == 2)
-        {
             new_node->outfile = ft_open2((*toke)->value);
-        }
         if ((*toke)->type == 3)
         {
             h++;
@@ -315,8 +315,7 @@ t_command	* create_node(t_token **toke)
            new_node->infile = ft_open4((*toke)->value);
         if ((*toke)->type == 0)
         {
-            str[z] = strdup((*toke)->value);
-            
+            str[z] = ft_strdup((*toke)->value);
             z++;
         }
         if ((*toke)->type == 6)
@@ -330,10 +329,10 @@ t_command	* create_node(t_token **toke)
         *toke = (*toke)->next;
         
     }
+    // printf("str-------%s\n", str[z-1])
     str[z] = 0;
     // int i = 0;
 	new_node->cmd = str;
-    (*toke)->envp->num_pipe++;
 	return (new_node);
 }
 
@@ -482,73 +481,56 @@ int get_index_single(char *str, int i)
 
 t_token *rmv_quotes(t_token *exp)
 {
-    // int k;
     int i = 0;
-    // int z = 0;
     char *str2 = NULL;
     t_token *tmp;
     tmp = exp;
     // exp = exp->next;
+    
     while (tmp)
     {
-    i = 0;
-    // z = 0;
-    // printf("exp value = %s\n", exp->value);
-    while (tmp->value[i] && i < (int)strlen(tmp->value))
-    {
-        if (tmp->value[i] == 0)
-            break;
-        if (tmp->value[i] == '"')
-        {
-            str2 = ft_strjoin(str2, expand_double2(tmp->value, i));
-            i = get_index_double(tmp->value,i);
-            // i++;
-            // printf("%d\n", i);
-        }
-        if (tmp->value[i] && tmp->value[i] == 39)
-        {
-            str2 = ft_strjoin(str2, expand_single2(tmp->value, i));
-            i = get_index_single(tmp->value, i);
-        }
-        else if (tmp->value[i] && tmp->value[i] != '"' && tmp->value[i] != 39)
+        i = 0;
+        // z = 0;
+        if (tmp->value[0])
+        { 
+            printf ("IM in \n");
+            while (tmp->value[i] && i < (int)ft_strlen(tmp->value))
             {
-                str2 = ft_strjoin(str2, parser_get_current_char_as_string(tmp->value[i]));
-                i++;
+                if (tmp->value[i] == 0)
+                    break;
+                if (tmp->value[i] == '"')
+                {
+                    str2 = ft_strjoin(str2, expand_double2(tmp->value, i));
+                    i = get_index_double(tmp->value,i);
+                    // i++;
+                    // printf("%d\n", i);
+                }
+                if (tmp->value[i] && tmp->value[i] == 39)
+                {
+                    str2 = ft_strjoin(str2, expand_single2(tmp->value, i));
+                    i = get_index_single(tmp->value, i);
+                }
+                else if (tmp->value[i] && tmp->value[i] != '"' && tmp->value[i] != 39)
+                    {
+                        str2 = ft_strjoin(str2, parser_get_current_char_as_string(tmp->value[i]));
+                        i++;
+                    }
+                // printf("str2 ==== %s i = %d\n", str2, i);
+                // i++;
             }
-        // printf("str2 ==== %s i = %d\n", str2, i);
-        // i++;
-    }
-    // k = i - z;
-    printf("-> %s\n", str2);
-    // str2 = malloc(sizeof(char) * ((i - z) + 1));
-    // i = 0;
-    // z = 0;
-    // while (z < k)
-    // {
-    //     if (exp->value[i] != '"' && exp->value[i] != 39)
-    //     {
-    //         str2[z] = exp->value[i];
-    //         z++;
-    //         i++;
-    //     }
-    //     else
-    //         i++;
-    // }
-    // str2[i] = 0;
-    // printf("toke after removing = %s\n", str2);
-        // printf("str ============================== \n");
+        }
+        printf("salam\n");
 
-    // free(tmp->value);
-    tmp->value = strdup(str2);
-    free (str2);
-    str2 = NULL;
-    // printf("token is {%s}\n", tmp->value);
-    tmp = tmp->next;
+        // free(tmp->value);
+        tmp->value = ft_strdup(str2);
+        free (str2);
+        str2 = NULL;
+        printf("token is {%s}\n", tmp->value);
+        tmp = tmp->next;
     }
     // exp = tmp;
     // printf("ecp value = %s\n", exp->value);
     return (exp);
-    
 }
 
 
@@ -637,7 +619,8 @@ int main(int ac, char **av, char **env)
 {
     str = readline("\033[0;32m~ minishell\x1b[0m "); // TODO remove comments on this line
     // str = "arg1| arg2";
-    add_history(str);
+    if (str[0])
+        add_history(str);
     toke = lexi(str);
     if (toke->type != 7 && toke->type != 6)
     {
@@ -645,10 +628,12 @@ int main(int ac, char **av, char **env)
         toke = rmv_quotes(toke);
         cmds = init_struct(toke);
 
-        while (cmds)
+
+        t_command *tmp = cmds;
+        while (tmp)
         {
             my_env->num_pipe++;
-            cmds = cmds->next;
+            tmp = tmp->next;
         }
         // int i = 0;
 // while (cmds)
@@ -661,7 +646,8 @@ int main(int ac, char **av, char **env)
 //     // }
 //     cmds = cmds->next;
 // }
-        execution(cmds, my_envp);
+        execution(cmds, my_env);
+        my_env->num_pipe = -1;
     }
         
         // while (exp->next != NULL)

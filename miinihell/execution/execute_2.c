@@ -6,7 +6,7 @@
 /*   By: mhabibi- <mhabibi-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 16:18:31 by lsemlali          #+#    #+#             */
-/*   Updated: 2023/01/15 01:33:42 by mhabibi-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:28:35 by mhabibi-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	is_built(char *s)
 		i = 1;
 	if (ft_strncmp(s, "exit", 4) == 0 && ft_strlen(s) == 4)
 		i = 1;
-	free(str);
+	if (str)
+		free(str);
 	return (i);
 }
 
