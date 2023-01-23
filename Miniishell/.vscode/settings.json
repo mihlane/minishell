@@ -1,8 +1,0 @@
-{
-    "[c]": {
-      "editor.defaultFormatter": "keyhr.42-c-format"
-    },
-    "files.associations": {
-      "norm after": "c"
-    }
-  }
